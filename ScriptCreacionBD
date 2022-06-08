@@ -1,0 +1,344 @@
+USE [master]
+GO
+/****** Object:  Database [Apptividad]    Script Date: 8/6/2022 08:00:53 ******/
+CREATE DATABASE [Apptividad]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Apptividad', FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Apptividad.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Apptividad_log', FILENAME = N'D:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\Apptividad_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [Apptividad] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Apptividad].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Apptividad] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Apptividad] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Apptividad] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Apptividad] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Apptividad] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Apptividad] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Apptividad] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Apptividad] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Apptividad] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Apptividad] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Apptividad] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Apptividad] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Apptividad] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Apptividad] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Apptividad] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [Apptividad] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Apptividad] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Apptividad] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Apptividad] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Apptividad] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Apptividad] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Apptividad] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Apptividad] SET RECOVERY FULL 
+GO
+ALTER DATABASE [Apptividad] SET  MULTI_USER 
+GO
+ALTER DATABASE [Apptividad] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Apptividad] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Apptividad] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Apptividad] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Apptividad] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Apptividad] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'Apptividad', N'ON'
+GO
+ALTER DATABASE [Apptividad] SET QUERY_STORE = OFF
+GO
+USE [Apptividad]
+GO
+/****** Object:  User [apptividadUser]    Script Date: 8/6/2022 08:00:54 ******/
+CREATE USER [apptividadUser] FOR LOGIN [apptividadUser] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [apptividadUser]
+GO
+/****** Object:  Table [dbo].[Categoria]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categoria](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nombre] [varchar](100) NULL,
+ CONSTRAINT [PK_Categoria] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Producto]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Producto](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Imagen] [varbinary](max) NULL,
+	[Descripción] [varchar](100) NULL,
+	[Precio_Compra] [float] NULL,
+	[Precio_Venta] [float] NULL,
+	[Stock] [int] NULL,
+	[ID_Categoria] [int] NULL,
+	[Fecha_Creacion] [datetime] NULL,
+	[InfoProducto] [xml] NOT NULL,
+ CONSTRAINT [PK_Producto] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Categoria] ON 
+GO
+INSERT [dbo].[Categoria] ([Id], [Nombre]) VALUES (1, N'Prueba')
+GO
+INSERT [dbo].[Categoria] ([Id], [Nombre]) VALUES (2, N'Cat2')
+GO
+SET IDENTITY_INSERT [dbo].[Categoria] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Producto] ON 
+GO
+INSERT [dbo].[Producto] ([Id], [Imagen], [Descripción], [Precio_Compra], [Precio_Venta], [Stock], [ID_Categoria], [Fecha_Creacion], [InfoProducto]) VALUES (5, NULL, N'Prueba', 5000, 6000, 5, 1, CAST(N'2022-05-31T19:11:14.777' AS DateTime), N'<OrigenProducto><pais>CRI</pais><lote>450</lote><FechaProducción>20220531</FechaProducción></OrigenProducto>')
+GO
+INSERT [dbo].[Producto] ([Id], [Imagen], [Descripción], [Precio_Compra], [Precio_Venta], [Stock], [ID_Categoria], [Fecha_Creacion], [InfoProducto]) VALUES (1002, NULL, N'Prueba', 3434343, 34343422, 45, 1, CAST(N'2022-06-08T07:51:01.000' AS DateTime), N'<OrigenProducto><pais>CRI</pais><lote>450</lote><FechaProducción>20220531</FechaProducción></OrigenProducto>')
+GO
+SET IDENTITY_INSERT [dbo].[Producto] OFF
+GO
+ALTER TABLE [dbo].[Producto] ADD  DEFAULT (getdate()) FOR [Fecha_Creacion]
+GO
+ALTER TABLE [dbo].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Categoria] FOREIGN KEY([ID_Categoria])
+REFERENCES [dbo].[Categoria] ([Id])
+GO
+ALTER TABLE [dbo].[Producto] CHECK CONSTRAINT [FK_Producto_Categoria]
+GO
+/****** Object:  StoredProcedure [dbo].[Create_Categoria]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Create_Categoria]  
+	@nombre varchar(100)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	Insert into Categoria values(@nombre)
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Create_Producto]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Create_Producto]  
+	@Imagen varbinary(MAX),
+	@Descripción varchar(100),
+	@Precio_Compra float,
+	@Precio_Venta float,
+	@Stock int,
+	@ID_Categoria int,
+	@InfoProducto xml 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Producto]
+           ([Imagen]
+           ,[Descripción]
+           ,[Precio_Compra]
+           ,[Precio_Venta]
+           ,[Stock]
+           ,[ID_Categoria]
+           ,[InfoProducto])
+     VALUES
+           (@Imagen ,
+			@Descripción ,
+			@Precio_Compra ,
+			@Precio_Venta ,
+			@Stock ,
+			@ID_Categoria ,
+			@InfoProducto )
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Delete_Categoria]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Delete_Categoria]  
+	@id int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	Delete Categoria where id = @id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Delete_Producto]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Delete_Producto]  
+	@id int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM [dbo].[Producto]
+	where id = @id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Get_All_Categoria]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create PROCEDURE [dbo].[Get_All_Categoria]  
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    Select *
+	from Categoria
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Get_All_Productos]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Get_All_Productos]  
+	@IdCategoria int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    Select *
+	from Producto
+	Where ID_Categoria = @IdCategoria
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Get_Producto]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[Get_Producto]  
+	@Id int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    Select *
+	from Producto
+	Where id = @Id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Update_Categoria]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Update_Categoria] 
+    @Id int,
+	@nombre varchar(100)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	Update CAtegoria 
+	set nombre =  @nombre
+	where id = @id
+END
+GO
+/****** Object:  StoredProcedure [dbo].[Update_Producto]    Script Date: 8/6/2022 08:00:54 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Update_Producto] 
+    @Id int,
+	@Imagen varbinary(MAX),
+	@Descripción varchar(100),
+	@Precio_Compra float,
+	@Precio_Venta float,
+	@Stock int,
+	@ID_Categoria int,
+	@InfoProducto xml 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	UPDATE [dbo].[Producto]
+   SET [Imagen] = @Imagen
+      ,[Descripción] = @Descripción
+      ,[Precio_Compra] = @Precio_Compra
+      ,[Precio_Venta] = @Precio_Venta
+      ,[Stock] = @Stock
+      ,[ID_Categoria] = @ID_Categoria
+      ,[InfoProducto] = @InfoProducto
+	where id = @id
+END
+GO
+USE [master]
+GO
+ALTER DATABASE [Apptividad] SET  READ_WRITE 
+GO
